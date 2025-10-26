@@ -42,13 +42,13 @@ source install/setup.bash
 ```
 
 ### :white_check_mark: Rviz
-Spawn Armando in RViz with the correct configuration using the `ros2 launch` command:
+Spawn Armando in Rviz with the correct configuration using the `ros2 launch` command:
 ```sh
 ros2 launch armando_description armando_display.launch.py
 ```
 
 ### :white_check_mark: Gazebo
-Run the Armando world in Gazebo specifing the controller you want to use through the argument `ctrl`:
+Run the `armando_world.launch.py` in Gazebo by specifying the controller you want to use through the argument `ctrl`:
 * **position controller**:
 ```sh
 ros2 launch armando_gazebo armando_world.launch.py ctrl:=0
@@ -60,8 +60,8 @@ ros2 launch armando_gazebo armando_world.launch.py ctrl:=1
 :mag: ***Note***: by default is set on the position controller.
 
 ### :white_check_mark: Armando Controller
-Once the robot is in the Gazebo world, in an other terminal run the `armando_controller_node` specifying the controller type by setting the argument as follows:
-* **position controller**:
+Once the robot is in the Gazebo world, in an other terminal run the `armando_controller_node` by specifying the controller type and setting the argument as follows:
+* **position controller**:s
 ```sh
 ros2 run armando_controller armando_controller_node 0
 ```

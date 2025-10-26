@@ -111,7 +111,7 @@ class ArmandoController : public rclcpp::Node
         if(all_errors_zero(n, pos_command, msg)) ref++; // go to next reference
 
       } // end if
-      
+
     } // end topic_pos_controller
 
     void topic_traj_controller(const int n, const sensor_msgs::msg::JointState & msg)const{
@@ -227,15 +227,35 @@ int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
   // debug:
-  std::cout << "[DEBUG] argc = " << argc << std::endl;
-  for (int i = 0; i < argc; i++)
-      std::cout << "[DEBUG] argv[" << i << "] = " << argv[i] << std::endl;
-  // conversione a intero
-  int sel = argv[1][0]-48;
-  std::cout << "[DEBUG] ctrl = " << sel << std::endl;
-  //start spin
-  rclcpp::spin(std::make_shared<ArmandoController>(sel));
-  rclcpp::shutdown();
+  // std::cout << "[main] argc = " << argc << std::endl;
+  // for (int i = 0; i < argc; i++)
+  //     std::cout << "[main] argv[" << i << "] = " << argv[i] << std::endl;
+  
+  int sel = 0;
+  /* sel is the selection var: 
+    sel = 0 -> position controller;
+    sel = 1 -> trajectory controller.
+
+    Note: the default controller is the position controller
+  */ 
+
+  if(argc<2){
+    std::cout << "[main] No controller selected. Starting the defualt one..." << std::endl; 
+  }
+  else{
+    // To int conversion of the first char
+    int sel = argv[1][0] - 48;
+  }
+
+  if(sel<2)
+    std::cout << "[main] ctrl = " << sel std::endl;
+    //start spin
+    rclcpp::spin(std::make_shared<ArmandoController>(sel));
+    rclcpp::shutdown();
+  else{
+    std::cout << "[main] ctrl = " << sel << " is not defined. Closing..." << std::endl;
+  }
+  
   
   return 0;
 }

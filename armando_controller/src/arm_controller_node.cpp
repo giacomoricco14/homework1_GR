@@ -36,6 +36,27 @@ class ArmandoController : public rclcpp::Node
     }
 
   private:
+    bool all_errors_zero(const int n, 
+      const std_msgs::msg::Float64MultiArray &pos_command,
+      const sensor_msgs::msg::JointState & msg)const{
+      /* Computing the position error */
+      float* position_error = new float[msg.name.size()];
+      int count_zero = 0;
+      float threshold = 0.00001;
+
+      for(int i=0; i<n; i++){
+        position_error[i] = pos_command.data[i] - msg.position[i];
+        // printf("\n%f",position_error[i]);
+        if(abs(position_error[i])<threshold){
+          count_zero++;
+        }
+      }   
+
+      delete[] position_error; // avoiding memory leak
+
+      return count_zero==4;
+    } // end all_errors_zero
+
     void topic_pos_controller(const int n, const sensor_msgs::msg::JointState & msg)const{
       // Publisher position controller:
       auto pos_command = std_msgs::msg::Float64MultiArray();
@@ -50,21 +71,8 @@ class ArmandoController : public rclcpp::Node
         // Publish the positions
         publisher_pos->publish(pos_command);
 
-        /* Computing the position error */
-        float* position_error = new float[msg.name.size()];
-        int count_zero = 0;
-        float threshold = 0.00001;
+        if(all_errors_zero(n, pos_command, msg)) ref++; // go to next reference
 
-        for(int i=0; i<n; i++){
-          position_error[i] = pos_command.data[i] - msg.position[i];
-          // printf("\n%f",position_error[i]);
-          if(abs(position_error[i])<threshold){
-            count_zero++;
-          }
-        }   
-        if(count_zero==4) ref++; // go to next reference
-
-        delete[] position_error; // avoiding memory leak
       } // end if
       if(ref==1){
         /* Target Joint Positions */
@@ -75,20 +83,9 @@ class ArmandoController : public rclcpp::Node
         // Publish the positions
         publisher_pos->publish(pos_command);
 
-        /* Computing the position error */
-        float* position_error = new float[msg.name.size()];
-        int count_zero = 0;
-        float threshold = 0.00001;
-        for(int i=0; i<n; i++){
-          position_error[i] = pos_command.data[i] - msg.position[i];
-          printf("\n%f",position_error[i]);
-          if(abs(position_error[i])<threshold){
-            count_zero++;
-          }
-        }   
-        if(count_zero==4) ref++; // go to next reference
+        
+        if(all_errors_zero(n, pos_command, msg)) ref++; // go to next reference
 
-        delete[] position_error; // avoiding memory leak
       } // end if
       if(ref==2){
         /* Target Joint Positions */
@@ -99,20 +96,8 @@ class ArmandoController : public rclcpp::Node
         // Publish the positions
         publisher_pos->publish(pos_command);
 
-        /* Computing the position error */
-        float* position_error = new float[msg.name.size()];
-        int count_zero = 0;
-        float threshold = 0.00001;
-        for(int i=0; i<n; i++){
-          position_error[i] = pos_command.data[i] - msg.position[i];
-          printf("\n%f",position_error[i]);
-          if(abs(position_error[i])<threshold){
-            count_zero++;
-          }
-        }   
-        if(count_zero==4) ref++; // go to next reference
+        if(all_errors_zero(n, pos_command, msg)) ref++; // go to next reference
 
-        delete[] position_error; // avoiding memory leak
       } // end if
       if(ref==3){
         /* Target Joint Positions */
@@ -123,21 +108,10 @@ class ArmandoController : public rclcpp::Node
         // Publish the positions
         publisher_pos->publish(pos_command);
 
-        /* Computing the position error */
-        float* position_error = new float[msg.name.size()];
-        int count_zero = 0;
-        float threshold = 0.00001;
-        for(int i=0; i<n; i++){
-          position_error[i] = pos_command.data[i] - msg.position[i];
-          printf("\n%f",position_error[i]);
-          if(abs(position_error[i])<threshold){
-            count_zero++;
-          }
-        }   
-        if(count_zero==4) ref++; // go to next reference
+        if(all_errors_zero(n, pos_command, msg)) ref++; // go to next reference
 
-        delete[] position_error; // avoiding memory leak
       } // end if
+      
     } // end topic_pos_controller
 
     void topic_traj_controller(const int n, const sensor_msgs::msg::JointState & msg)const{
@@ -162,20 +136,8 @@ class ArmandoController : public rclcpp::Node
         // Publish the positions
         publisher_traj->publish(traj_command);
 
-        /* Computing the position error */
-        float* position_error = new float[msg.name.size()];
-        int count_zero = 0;
-        float threshold = 0.00001;
-        for(int i=0; i<n; i++){
-          position_error[i] = point.positions[i] - msg.position[i];
-          printf("\n%f",position_error[i]);
-          if(abs(position_error[i])<threshold){
-            count_zero++;
-          }
-        }   
-        if(count_zero==4) ref++; // go to next reference
+        if(all_errors_zero(n, pos_command, msg)) ref++; // go to next reference
 
-        delete[] position_error; // avoiding memory leak
       } // end if
       if(ref==1){
         /* Target Joint Positions */
@@ -192,20 +154,8 @@ class ArmandoController : public rclcpp::Node
         // Publish the positions
         publisher_traj->publish(traj_command);
 
-        /* Computing the position error */
-        float* position_error = new float[msg.name.size()];
-        int count_zero = 0;
-        float threshold = 0.00001;
-        for(int i=0; i<n; i++){
-          position_error[i] = point.positions[i] - msg.position[i];
-          printf("\n%f",position_error[i]);
-          if(abs(position_error[i])<threshold){
-            count_zero++;
-          }
-        }     
-        if(count_zero==4) ref++; // go to next reference
+        if(all_errors_zero(n, pos_command, msg)) ref++; // go to next reference
 
-        delete[] position_error; // avoiding memory leak
       } // end if
       if(ref==2){
         /* Target Joint Positions */
@@ -222,20 +172,8 @@ class ArmandoController : public rclcpp::Node
         // Publish the positions
         publisher_traj->publish(traj_command);
 
-        /* Computing the position error */
-        float* position_error = new float[msg.name.size()];
-        int count_zero = 0;
-        float threshold = 0.00001;
-        for(int i=0; i<n; i++){
-          position_error[i] = point.positions[i] - msg.position[i];
-          printf("\n%f",position_error[i]);
-          if(abs(position_error[i])<threshold){
-            count_zero++;
-          }
-        }    
-        if(count_zero==4) ref++; // go to next reference
+        if(all_errors_zero(n, pos_command, msg)) ref++; // go to next reference
 
-        delete[] position_error; // avoiding memory leak
       } // end if
       if(ref==3){
         /* Target Joint Positions */
@@ -252,21 +190,10 @@ class ArmandoController : public rclcpp::Node
         // Publish the positions
         publisher_traj->publish(traj_command);
 
-        /* Computing the position error */
-        float* position_error = new float[msg.name.size()];
-        int count_zero = 0;
-        float threshold = 0.00001;
-        for(int i=0; i<n; i++){
-          position_error[i] = point.positions[i] - msg.position[i];
-          printf("\n%f",position_error[i]);
-          if(abs(position_error[i])<threshold){
-            count_zero++;
-          }
-        }   
-        if(count_zero==4) ref++; // go to next reference
+        if(all_errors_zero(n, pos_command, msg)) ref++; // go to next reference
 
-        delete[] position_error; // avoiding memory leak
       } // end if
+
     } // end topic_traj_controller
 
     void topic_callback(const sensor_msgs::msg::JointState & msg) const

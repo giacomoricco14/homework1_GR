@@ -52,7 +52,7 @@ ros2 launch armando_gazebo armando_world.launch.py ctrl:=0
 ```sh
 ros2 launch armando_gazebo armando_world.launch.py ctrl:=1
 ```
-:warning: ***Note***: by default is set on the position controller.
+:mag: ***Note***: by default is set on the position controller.
 
 Once the robot is in the Gazebo world, in an other terminal run the controller node specifing the controller type by setting the argument as follows:
 * **position controller**:

@@ -17,7 +17,8 @@ apt-get install ros-humble-ign-ros2-control -y && \
 
 #adding 
 apt-get install ros-humble-urdf-tutorial -y && \
-apt-get install ros-humble-xacro -y
+apt-get install ros-humble-xacro -y && \
+apt-get install ros-humble-ros-gz-sim -y
 ```
 Then rebuild the docker image through the provided script:
 ```sh

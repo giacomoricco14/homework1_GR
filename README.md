@@ -61,7 +61,7 @@ ros2 launch armando_gazebo armando_world.launch.py ctrl:=1
 
 ### :white_check_mark: Armando Controller
 Once the robot is in the Gazebo world, in an other terminal run the `armando_controller_node` by specifying the controller type and setting the argument as follows:
-* **position controller**:s
+* **position controller**:
 ```sh
 ros2 run armando_controller armando_controller_node 0
 ```

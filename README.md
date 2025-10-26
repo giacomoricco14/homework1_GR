@@ -2,7 +2,7 @@
 The goal of this project is to design and simulate a four-degrees-of-freedom robotic manipulator, named **Armando**, within the ROS 2 environment using **Gazebo** and **RViz** simulation software. 
 Starting from the provided base package **armando_description**, the robot description was modified and extended to include visualization and physical modeling in RViz and Gazebo, and later the integration of sensors and controllers.
  
-## Dockerfile modification
+## :hammer_and_wrench:Dockerfile modification
 This package depends on the following Ros2 Humble packages: ros-humble-ros-ign-bridge, ros-humble-ros-gz, ros-humble-controller-manager, ros-humble-ros2-control, ros-humble-ros2-controllers, and ros-humble-ign-ros2-control, which are already included in the provided Dockerfile. Additional dependencies such as ros-humble-urdf-tutorial, ros-humble-xacro and ros-humble-ros-gz-sim have been manually added.
 Therefore, open the Dockerfile and add the following line:
 ```sh
@@ -24,9 +24,9 @@ Then rebuild the docker image through the provided script:
 ```sh
 ./docker_build_image.sh <${image_name}>
 ```
-***Warning***: Be sure that this is the only export path for IGN GAZEBO.
+:warning:***Warning***: Be sure that this is the only export path for IGN GAZEBO.
 
-## Bring up Armando
+## :rocket:Bring up Armando
 Enter in ros2 workspace and build the following packages:
 ```sh
 colcon build --packages-select armando_description armando_gazebo armando_controller
@@ -36,13 +36,13 @@ Hence, source the code:
 source install/setup.bash
 ```
 
-### RViz
+### :white_check_mark:RViz
 Spawn Armando in RViz with the correct configuration:
 ```sh
 ros2 launch armando_description armando_display.launch.py
 ```
 
-### Gazebo
+### :white_check_mark:Gazebo
 Run the Armando world in Gazebo specifing the controller you want to use through the argument `ctrl`:
 * **position controller**:
 ```sh
@@ -52,7 +52,7 @@ ros2 launch armando_gazebo armando_world.launch.py ctrl:=0
 ```sh
 ros2 launch armando_gazebo armando_world.launch.py ctrl:=1
 ```
-***Note***: by default is set on the position controller.
+:warning:***Note***: by default is set on the position controller.
 
 Once the robot is in the Gazebo world, in an other terminal run the controller node specifing the controller type by setting the argument as follows:
 * **position controller**:

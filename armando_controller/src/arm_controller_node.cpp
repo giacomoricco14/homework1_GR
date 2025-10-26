@@ -273,7 +273,7 @@ int main(int argc, char * argv[])
     sel = argv[1][0] - 48;
   }
 
-  if(sel<2){
+  if(sel>-1 && sel < 2){
     std::cout << "[main] ctrl = " << sel << std::endl;
     //start spin
     rclcpp::spin(std::make_shared<ArmandoController>(sel));

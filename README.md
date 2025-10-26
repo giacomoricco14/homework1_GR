@@ -1,5 +1,5 @@
 # Homework 1: Bring Up Your Robot
-The goal of this project is to design and simulate a four-degrees-of-freedom robotic manipulator, named **Armando**, within the ROS 2 environment using **__Gazebo__** and **__RViz__** simulation software. 
+The goal of this project is to design and simulate a four-degrees-of-freedom robotic manipulator, named **Armando**, within the ROS 2 environment using **Gazebo** and **RViz** simulation software. 
 Starting from the provided base package **armando_description**, the robot description was modified and extended to include visualization and physical modeling in RViz and Gazebo, and later the integration of sensors and controllers.
  
 ## Dockerfile modification
@@ -23,20 +23,23 @@ Hence, source the code:
 source install/setup.bash
 ```
 
+### RViz
 Spawn Armando in RViz with the correct configuration:
 ```sh
 ros2 launch armando_description armando_display.launch.py
 ```
 
-Run the Armando world in Gazebo specifing the controller you want to use:
-* for the **position controller**:
+### Gazebo
+Run the Armando world in Gazebo specifing the controller you want to use through the argument `ctrl`:
+* **position controller**:
 ```sh
 ros2 launch armando_gazebo armando_world.launch.py ctrl:=0
 ```
-* for the **trajectory controller**.
+* **trajectory controller**.
 ```sh
 ros2 launch armando_gazebo armando_world.launch.py ctrl:=1
 ```
+***Note*** that by default is set on the position controller.
 
 Once the robot is in the Gazebo world, run the controller node opening a new terminal:
 * **position controller**:

@@ -7,12 +7,14 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
+# find_package(armando_description)
 
 install(DIRECTORY
   config_armando_gz # aggiunto per il punto 2c
-  urdf
-  meshes
+  # urdf
+  # meshes
   launch
+  models
   DESTINATION share/${PROJECT_NAME}
 )
 

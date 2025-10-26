@@ -51,7 +51,7 @@ from launch.event_handlers import OnProcessExit
 def generate_launch_description():
 
  # Percorso del pacchetto
-    pkg_path = get_package_share_directory('armando_gazebo')
+    pkg_path = get_package_share_directory('armando_description')
 
     # Percorsi dei file
     # urdf_path = os.path.join(pkg_path, 'urdf', 'arm.urdf')
@@ -60,7 +60,7 @@ def generate_launch_description():
     # with open(urdf_path, 'r') as infp:
     #     robot_desc = infp.read()
         
-    xacro_armando = PathJoinSubstitution([pkg_path, "urdf", "arm.urdf.xacro"])
+    xacro_armando = PathJoinSubstitution([pkg_path, "urdf", "armando.urdf.xacro"])
     # Parametri del robot
     # params = {'robot_description': robot_desc}
     params = {'robot_description': Command(['xacro ', xacro_armando, ' j0:=2.0', ' j1:=0.2', ' j2:=0.0', ' j3:=0.0'])}
@@ -68,7 +68,7 @@ def generate_launch_description():
     # these are the arguments you can pass this launch file, for example paused:=true
     controller_arg = DeclareLaunchArgument(
         name='ctrl',
-        description = '0 = pos controller, 1 = trajectory controller',
+        description = 'Select: 0 for pos controller; 1 for trajectory controller',
         default_value='0',
     )
     user = LaunchConfiguration("ctrl")
@@ -78,10 +78,10 @@ def generate_launch_description():
     )
     package_arg = DeclareLaunchArgument('urdf_package',
                                         description='The package where the robot description is located',
-                                        default_value='armando_gazebo')
+                                        default_value='armando_description')
     model_arg = DeclareLaunchArgument('urdf_package_path',
                                       description='The path to the robot description relative to the package root',
-                                      default_value='urdf/arm.urdf.xacro') # punto 2c
+                                      default_value='urdf/armando.urdf.xacro') # punto 2c
 
 
     empty_world_launch = IncludeLaunchDescription(

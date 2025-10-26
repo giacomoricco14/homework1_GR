@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<robot name="arm">
+<robot name="arm" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <material name="red">
     <color rgba="1 0 0 1"/>
@@ -17,7 +17,7 @@
     </visual>
     <collision>
       <geometry>
-        <mesh filename="package://armando_gazebo/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+        <box size = "0.09 0.09 0.08"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -43,7 +43,7 @@
     </visual>
     <collision>
       <geometry>
-          <mesh filename="package://armando_gazebo/meshes/base_turn.stl" scale="0.001 0.001 0.001"/>
+          <box size = "0.06 0.07 0.007"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>   
@@ -70,7 +70,7 @@
     </visual>
     <collision>
       <geometry>
-          <mesh filename="package://armando_gazebo/meshes/base_turn_table_rot.stl" scale="0.001 0.001 0.001"/>
+          <box size = "0.05 0.05 0.02"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -97,7 +97,7 @@
     </visual>
     <collision>
       <geometry>
-          <mesh filename="package://armando_gazebo/meshes/dyn.stl" scale="0.01 0.01 0.01"/>
+          <box size = "0.05 0.03 0.04"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -135,7 +135,7 @@
     </visual>
     <collision>
       <geometry>
-          <mesh filename="package://armando_gazebo/meshes/f4_n_f3.stl" scale="0.001 0.001 0.001"/>
+          <box size = "0.048 0.091 0.028"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -160,7 +160,7 @@
     </visual>
     <collision>
       <geometry>
-          <mesh filename="package://armando_gazebo/meshes/dyn.stl" scale="0.01 0.01 0.01"/>
+          <box size = "0.05 0.03 0.04"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -198,7 +198,7 @@
     </visual>
     <collision>
       <geometry>
-          <mesh filename="package://armando_gazebo/meshes/f4_n_f3.stl" scale="0.001 0.001 0.001"/>
+          <box size = "0.048 0.091 0.028"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -224,7 +224,7 @@
     </visual>
     <collision>
       <geometry>
-          <mesh filename="package://armando_gazebo/meshes/dyn.stl" scale="0.01 0.01 0.01"/>
+          <box size = "0.05 0.03 0.04"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -263,7 +263,7 @@
     </visual>
     <collision>
       <geometry>
-        <mesh filename="package://armando_gazebo/meshes/wrist.stl" scale="0.001 0.001 0.001"/>
+        <box size = "0.048 0.054 0.042"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -289,7 +289,7 @@
     </visual>
     <collision>
       <geometry>
-          <mesh filename="package://armando_gazebo/meshes/dyn.stl" scale="0.01 0.01 0.01"/>
+          <box size = "0.05 0.03 0.04"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -328,7 +328,7 @@
     </visual>
     <collision>
       <geometry>
-          <mesh filename="package://armando_gazebo/meshes/the_crawer_base.stl" scale="0.001 0.001 0.001"/>
+          <box size = "0.104 0.057 0.005"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -357,7 +357,7 @@
     </visual>
     <collision>
       <geometry>
-          <mesh filename="package://armando_gazebo/meshes/the_crawer.stl" scale="0.001 0.001 0.001"/>
+          <box size = "0.06 0.03 0.04"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -387,7 +387,7 @@
     </visual>
     <collision>
       <geometry>
-          <mesh filename="package://armando_gazebo/meshes/the_crawer.stl" scale="0.001 0.001 0.001"/>
+          <box size = "0.06 0.03 0.04"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -397,5 +397,85 @@
       <inertia ixx="6.90013881e-05" ixy="0.0" ixz="0.0" iyy="1.24554875e-04" iyz="0.0" izz="1.04295793e-04"/>
     </inertial>
   </link>
+
+  <joint name="camera_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="camera_link"/>
+      <origin xyz="0.0 0 -0.005" rpy="0.0 0.0 0"/>
+  </joint>
+
+  <link name="camera_link">
+      <visual>
+          <geometry>
+              <box size="0.05 0.05 0.05"/>
+          </geometry>
+          <material name="blue">
+            <color rgba="0 0 1 1"/>
+          </material>
+      </visual>
+  </link>
+
+
+
+
+
+
+  <gazebo>  
+    <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
+    <parameters>$(find armando_gazebo)/config_armando_gz/armando_controllers.yaml</parameters>
+      <controller_manager_prefix_node_name>controller_manager</controller_manager_prefix_node_name>
+    </plugin>
+  </gazebo>
+
+
+  <xacro:include filename="$(find armando_description)/urdf/armando_hardware_interface.xacro"/>
+
+  <xacro:arg name="j0" default="0.0"/>
+  <xacro:arg name="j1" default="0.0"/>
+  <xacro:arg name="j2" default="0.0"/>
+  <xacro:arg name="j3" default="0.0"/>
+
+  <ros2_control name="PositionJointInterface" type="system">
+
+    <hardware>
+      <plugin>ign_ros2_control/IgnitionSystem</plugin> 
+    </hardware>
+
+    <xacro:joint_ros2_control name="j0" initial_pos="$(arg j0)"/>   
+    <xacro:joint_ros2_control name="j1" initial_pos="$(arg j1)"/>   
+    <xacro:joint_ros2_control name="j2" initial_pos="$(arg j2)"/>   
+    <xacro:joint_ros2_control name="j3" initial_pos="$(arg j3)"/>   
+
+  </ros2_control>
+
+
+  <gazebo>
+	  <plugin filename="gz-sim-sensors-system"
+		name="gz::sim::systems::Sensors">
+		<render_engine>ogre2</render_engine>
+	</plugin>
+  </gazebo>
+
+  <gazebo reference="camera_link">
+  <sensor name="camera" type="camera">
+    <camera>
+      <horizontal_fov>1.047</horizontal_fov>
+      <image>
+        <width>320</width>
+        <height>240</height>
+      </image>
+      <clip>
+        <near>0.1</near>
+        <far>100</far>
+      </clip>
+    </camera>
+    <always_on>1</always_on>
+    <update_rate>30</update_rate>
+    <visualize>true</visualize>
+    <topic>camera</topic>
+  </sensor>
+</gazebo>
+
+
   
 </robot>

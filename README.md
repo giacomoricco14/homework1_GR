@@ -27,17 +27,22 @@ Then rebuild the docker image through the provided script:
 :warning: ***Warning***: Be sure that this is the only export path for IGN GAZEBO.
 
 ## :rocket: Bring up Armando
-Enter in ros2 workspace and build the following packages:
+Once the image is updated, download this repository in the image folder:
+```sh
+git clone https://github.com/I-FANTASTICI-4/Homework1.git
+```
+### :hammer: Build the packages
+Enter in ros2 workspace and build the following packages using `colcon build` and selecting the required packages:
 ```sh
 colcon build --packages-select armando_description armando_gazebo armando_controller
 ```
-Hence, source the code:
+Hence, `source` the code:
 ```sh
 source install/setup.bash
 ```
 
 ### :white_check_mark: RViz
-Spawn Armando in RViz with the correct configuration:
+Spawn Armando in RViz with the correct configuration using the `ros2 launch` command:
 ```sh
 ros2 launch armando_description armando_display.launch.py
 ```
@@ -54,7 +59,7 @@ ros2 launch armando_gazebo armando_world.launch.py ctrl:=1
 ```
 :mag: ***Note***: by default is set on the position controller.
 
-Once the robot is in the Gazebo world, in an other terminal run the controller node specifing the controller type by setting the argument as follows:
+Once the robot is in the Gazebo world, in an other terminal run the `armando_controller_node` specifying the controller type by setting the argument as follows:
 * **position controller**:
 ```sh
 ros2 run armando_controller armando_controller_node 0
@@ -63,3 +68,4 @@ ros2 run armando_controller armando_controller_node 0
 ```sh
 ros2 run armando_controller armando_controller_node 1
 ```
+:mag: ***Note***: also in this case the default item is the position controller.

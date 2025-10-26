@@ -3,9 +3,21 @@ The goal of this project is to design and simulate a four-degrees-of-freedom rob
 Starting from the provided base package **armando_description**, the robot description was modified and extended to include visualization and physical modeling in RViz and Gazebo, and later the integration of sensors and controllers.
  
 ## Dockerfile modification
-Open the Dockerfile and add the following line:
+This package depends on the following Ros2 Humble packages: ros-humble-ros-ign-bridge, ros-humble-ros-gz, ros-humble-controller-manager, ros-humble-ros2-control, ros-humble-ros2-controllers, and ros-humble-ign-ros2-control, which are already included in the provided Dockerfile. Additional dependencies such as ros-humble-urdf-tutorial, ros-humble-xacro and ros-humble-ros-gz-sim have been manually added.
+Therefore, open the Dockerfile and add the following line:
 ```sh
 RUN echo "export IGN_GAZEBO_RESOURCE_PATH=$IGN_GAZEBO_RESOURCE_PATH:/home/user/ros2_ws/src/armando_gazebo/models" >> ${HOME}/.bashrc
+
+RUN apt-get install -y ros-humble-ros-ign-bridge && \
+apt-get install -y ros-humble-ros-gz && \
+apt-get install ros-humble-controller-manager -y && \
+apt-get install ros-humble-ros2-control -y && \
+apt-get install ros-humble-ros2-controllers -y && \
+apt-get install ros-humble-ign-ros2-control -y && \
+
+#adding 
+apt-get install ros-humble-urdf-tutorial -y && \
+apt-get install ros-humble-xacro -y
 ```
 Then rebuild the docker image through the provided script:
 ```sh

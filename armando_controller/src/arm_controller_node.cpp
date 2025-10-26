@@ -57,6 +57,27 @@ class ArmandoController : public rclcpp::Node
       return count_zero==4;
     } // end all_errors_zero
 
+    bool all_errors_zero_traj(const int n, 
+      const trajectory_msgs::msg::JointTrajectoryPoint &point,
+      const sensor_msgs::msg::JointState & msg)const{
+      /* Computing the position error */
+      float* position_error = new float[msg.name.size()];
+      int count_zero = 0;
+      float threshold = 0.00001;
+
+      for(int i=0; i<n; i++){
+        position_error[i] = point.positions[i] - msg.position[i];
+        // printf("\n%f",position_error[i]);
+        if(abs(position_error[i])<threshold){
+          count_zero++;
+        }
+      }   
+
+      delete[] position_error; // avoiding memory leak
+
+      return count_zero==4;
+    } // end all_errors_zero_traj
+
     void topic_pos_controller(const int n, const sensor_msgs::msg::JointState & msg)const{
       // Publisher position controller:
       auto pos_command = std_msgs::msg::Float64MultiArray();
@@ -136,7 +157,7 @@ class ArmandoController : public rclcpp::Node
         // Publish the positions
         publisher_traj->publish(traj_command);
 
-        if(all_errors_zero(n, pos_command, msg)) ref++; // go to next reference
+        if(all_errors_zero_traj(n, point, msg)) ref++; // go to next reference
 
       } // end if
       if(ref==1){
@@ -154,7 +175,7 @@ class ArmandoController : public rclcpp::Node
         // Publish the positions
         publisher_traj->publish(traj_command);
 
-        if(all_errors_zero(n, pos_command, msg)) ref++; // go to next reference
+        if(all_errors_zero_traj(n, point, msg)) ref++; // go to next reference
 
       } // end if
       if(ref==2){
@@ -172,7 +193,7 @@ class ArmandoController : public rclcpp::Node
         // Publish the positions
         publisher_traj->publish(traj_command);
 
-        if(all_errors_zero(n, pos_command, msg)) ref++; // go to next reference
+        if(all_errors_zero_traj(n, point, msg)) ref++; // go to next reference
 
       } // end if
       if(ref==3){
@@ -190,7 +211,7 @@ class ArmandoController : public rclcpp::Node
         // Publish the positions
         publisher_traj->publish(traj_command);
 
-        if(all_errors_zero(n, pos_command, msg)) ref++; // go to next reference
+        if(all_errors_zero_traj(n, point, msg)) ref++; // go to next reference
 
       } // end if
 
@@ -244,14 +265,15 @@ int main(int argc, char * argv[])
   }
   else{
     // To int conversion of the first char
-    int sel = argv[1][0] - 48;
+    sel = argv[1][0] - 48;
   }
 
-  if(sel<2)
-    std::cout << "[main] ctrl = " << sel std::endl;
+  if(sel<2){
+    std::cout << "[main] ctrl = " << sel << std::endl;
     //start spin
     rclcpp::spin(std::make_shared<ArmandoController>(sel));
     rclcpp::shutdown();
+  }
   else{
     std::cout << "[main] ctrl = " << sel << " is not defined. Closing..." << std::endl;
   }

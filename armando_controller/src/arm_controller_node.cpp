@@ -36,6 +36,7 @@ class ArmandoController : public rclcpp::Node
     }
 
   private:
+    /* Function that returns true if all the errors are zero */
     bool all_errors_zero(const int n, 
       const std_msgs::msg::Float64MultiArray &pos_command,
       const sensor_msgs::msg::JointState & msg)const{
@@ -57,6 +58,7 @@ class ArmandoController : public rclcpp::Node
       return count_zero==4;
     } // end all_errors_zero
 
+    /* Same function as before but based on JointTrajectoryPoint input */
     bool all_errors_zero_traj(const int n, 
       const trajectory_msgs::msg::JointTrajectoryPoint &point,
       const sensor_msgs::msg::JointState & msg)const{
@@ -78,6 +80,7 @@ class ArmandoController : public rclcpp::Node
       return count_zero==4;
     } // end all_errors_zero_traj
 
+    /* Function called by ctrl = 0 */
     void topic_pos_controller(const int n, const sensor_msgs::msg::JointState & msg)const{
       // Publisher position controller:
       auto pos_command = std_msgs::msg::Float64MultiArray();
@@ -135,6 +138,7 @@ class ArmandoController : public rclcpp::Node
 
     } // end topic_pos_controller
 
+    /* Function called by ctrl = 1 */
     void topic_traj_controller(const int n, const sensor_msgs::msg::JointState & msg)const{
       // Publisher trajectory controller:
       auto traj_command = trajectory_msgs::msg::JointTrajectory();
@@ -217,6 +221,7 @@ class ArmandoController : public rclcpp::Node
 
     } // end topic_traj_controller
 
+    /* Function that receives msg from Sensor and publish the positions to the selected controller */
     void topic_callback(const sensor_msgs::msg::JointState & msg) const
     {
       int n = msg.name.size(); // joint number

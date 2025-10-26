@@ -11,7 +11,7 @@ Then rebuild the docker image through the provided script:
 ```sh
 ./docker_build_image.sh <${image_name}>
 ```
-**Warning**: Be sure that this is the only export path for IGN GAZEBO.
+***Warning***: Be sure that this is the only export path for IGN GAZEBO.
 
 ## Bring up Armando
 Enter in ros2 workspace and build the following packages:
@@ -41,7 +41,7 @@ ros2 launch armando_gazebo armando_world.launch.py ctrl:=1
 ```
 ***Note***: by default is set on the position controller.
 
-Once the robot is in the Gazebo world, in an other terminal run the controller node specifing the controller type by setting the argument:
+Once the robot is in the Gazebo world, in an other terminal run the controller node specifing the controller type by setting the argument as follows:
 * **position controller**:
 ```sh
 ros2 run armando_controller armando_controller_node 0

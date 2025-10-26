@@ -1,33 +1,33 @@
-# armando_display.launch.py
+# armando display launcher
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
-from launch.substitutions import Command, LaunchConfiguration
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
-from ament_index_python.packages import get_package_share_directory
 from launch.conditions import IfCondition, UnlessCondition
+
+from ament_index_python.packages import get_package_share_directory
 import os
 
-def generate_launch_description():
-    # percorso urdf
-    pkg_path = get_package_share_directory('armando_description')
-    urdf_path = os.path.join(pkg_path, 'urdf', 'arm.urdf')
 
-    # Leggi il file URDF
+def generate_launch_description():
+    # Package path
+    pkg_path = get_package_share_directory('armando_description')
+    # Urdf path
+    urdf_path = os.path.join(pkg_path, 'urdf', 'arm.urdf')
+    # read the urdf and store the robot description
     with open(urdf_path, 'r') as infp:
         robot_desc = infp.read()
 
-    # Percorso del pacchetto
+    # Rviz config path
     rviz_config_path = os.path.join(pkg_path, 'config_armando', 'standing.rviz')
 
-    ## Robot params
+    # Params: containing the robot description
     params = {'robot_description': robot_desc}
 
-    # xacro_armando = os.path.join(pkg_path, "urdf", "arm.urdf.xacro")
-    # params = {"robot_description": 
-    #           Command(['xacro ', xacro_armando, ' j0:=2.0', ' j1:=0.2', ' j2:=0.0', ' j3:=0.0'])}
 
-    # Arguments
+    #### Arguments ####
+
     jsp_gui = DeclareLaunchArgument(
         name='jsp_gui',
         default_value='true',
@@ -35,7 +35,9 @@ def generate_launch_description():
         description='Flag to enable joint_state_publisher_gui'
     )
 
-    # Nodes
+
+    #### Nodes ####
+
     robot_state_publisher = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
@@ -62,7 +64,8 @@ def generate_launch_description():
         arguments=['-d', rviz_config_path],
     )
 
-    # Lista dei nodi da lanciare
+
+    # List of Arguments and Nodes
     return LaunchDescription([
         jsp_gui,
         joint_state_publisher,

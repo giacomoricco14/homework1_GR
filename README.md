@@ -1,6 +1,6 @@
 # :robot: Homework 1: Bring Up Your Robot
-The goal of this project is to design and simulate a four-degrees-of-freedom robotic manipulator, named **Armando**, within the ROS 2 environment using **Gazebo** and **RViz** simulation software. 
-Starting from the provided base package **armando_description**, the robot description was modified and extended to include visualization and physical modeling in RViz and Gazebo, and later the integration of sensors and controllers.
+The goal of this project is to design and simulate a four-degrees-of-freedom robotic manipulator, named **Armando**, within the ROS 2 environment using **Gazebo** and **Rviz** simulation software. 
+Starting from the provided base package **armando_description**, the robot description was modified and extended to include visualization and physical modeling in Rviz and Gazebo, and later the integration of sensors and controllers.
  
 ## :hammer_and_wrench: Dockerfile modification
 This package depends on the following Ros2 Humble packages: ros-humble-ros-ign-bridge, ros-humble-ros-gz, ros-humble-controller-manager, ros-humble-ros2-control, ros-humble-ros2-controllers, and ros-humble-ign-ros2-control, which are already included in the provided Dockerfile. Additional dependencies such as ros-humble-urdf-tutorial, ros-humble-xacro and ros-humble-ros-gz-sim have been manually added.
@@ -41,7 +41,7 @@ Hence, `source` the code:
 source install/setup.bash
 ```
 
-### :white_check_mark: RViz
+### :white_check_mark: Rviz
 Spawn Armando in RViz with the correct configuration using the `ros2 launch` command:
 ```sh
 ros2 launch armando_description armando_display.launch.py
@@ -59,6 +59,7 @@ ros2 launch armando_gazebo armando_world.launch.py ctrl:=1
 ```
 :mag: ***Note***: by default is set on the position controller.
 
+### :white_check_mark: Armando Controller
 Once the robot is in the Gazebo world, in an other terminal run the `armando_controller_node` specifying the controller type by setting the argument as follows:
 * **position controller**:
 ```sh

@@ -9,9 +9,11 @@ endif()
 find_package(ament_cmake REQUIRED)
 
 install(
-	DIRECTORY config_armando launch meshes urdf
+	DIRECTORY launch urdf config_armando meshes
 	DESTINATION share/${PROJECT_NAME}
 )
+
+
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

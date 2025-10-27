@@ -9,10 +9,10 @@ endif()
 find_package(ament_cmake REQUIRED)
 
 install(DIRECTORY
-  config_armando_gz # included for point 2c: containing the armando_controllers.yaml
-  launch
+  config_armando_gz # aggiunto per il punto 2c
   urdf
-  models
+  meshes
+  launch
   DESTINATION share/${PROJECT_NAME}
 )
 

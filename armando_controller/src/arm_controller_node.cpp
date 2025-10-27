@@ -1,4 +1,16 @@
-// Armando controller node: receiving the JointStates and trasmitting the JointPositions
+// Copyright 2016 Open Source Robotics Foundation, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 #include <chrono>
 #include <functional>
@@ -16,273 +28,180 @@ using namespace std::chrono_literals;
 using std::placeholders::_1;
 
 /* This example creates a subclass of Node and uses std::bind() to register a
- * member function as a callback from the subscription. */
+ * member function as a callback from the timer. */
 
 class ArmandoController : public rclcpp::Node
 {
-  public:
-    ArmandoController(int ctrl=0): Node("arm_controller_node"), count_(0), ctrl(ctrl)
-    {
-      if(ctrl==0)
-        publisher_pos = this->create_publisher<std_msgs::msg::Float64MultiArray>(
-                      "position_controller/commands", 10);
-      else{
-        publisher_traj = this->create_publisher<trajectory_msgs::msg::JointTrajectory>(
-                      "joint_trajectory_controller/joint_trajectory", 10);
-      }
-      
-      subscription_ = this->create_subscription<sensor_msgs::msg::JointState>(
-                      "joint_states", 10, std::bind(&ArmandoController::topic_callback, this, _1));
+public:
+  ArmandoController(int ctrl=0)
+  : Node("arm_controller_node"), count_(0), ctrl(ctrl)
+  {
+    if(ctrl==0)
+      publisher_pos = this->create_publisher<std_msgs::msg::Float64MultiArray>(
+                    "position_controller/commands", 10);
+    else{
+      publisher_traj = this->create_publisher<trajectory_msgs::msg::JointTrajectory>(
+                    "joint_trajectory_controller/joint_trajectory", 10);
     }
+    
+    subscription_ = this->create_subscription<sensor_msgs::msg::JointState>(
+                    "joint_states", 10, std::bind(&ArmandoController::topic_callback, this, _1));
 
-  private:
-    /* Function that returns true if all the errors are zero */
-    bool all_errors_zero(const int n, 
-      const std_msgs::msg::Float64MultiArray &pos_command,
-      const sensor_msgs::msg::JointState & msg)const{
-      /* Computing the position error */
+    // timer_ = this->create_wall_timer(
+    // 500ms, std::bind(&ArmandoController::timer_callback, this));
+  }
+
+private:
+  void topic_pos_controller(const int n, const sensor_msgs::msg::JointState & msg)const{
+    // Publisher position controller:
+    auto pos_command = std_msgs::msg::Float64MultiArray();
+    static int ref=0; // switch case
+
+    if(ref==0){
+      // riferimento 0
+      pos_command.data= {1.57, 0, 0, 0};  // esempio di posizioni target
+      RCLCPP_INFO(this->get_logger(), "Publishing command position %d: {%f, %f, %f, %f}", 
+                  ref,
+                  pos_command.data[0], pos_command.data[1], pos_command.data[2], pos_command.data[3]);
+      publisher_pos->publish(pos_command);
+
+
       float* position_error = new float[msg.name.size()];
       int count_zero = 0;
       float threshold = 0.00001;
-
       for(int i=0; i<n; i++){
         position_error[i] = pos_command.data[i] - msg.position[i];
-        // printf("\n%f",position_error[i]);
+        printf("\n%f",position_error[i]);
         if(abs(position_error[i])<threshold){
           count_zero++;
         }
       }   
+      if(count_zero==4) ref++; 
 
-      delete[] position_error; // avoiding memory leak
+      delete[] position_error; // memory leak uagliu
+    }
+    if(ref==1){
+      // riferimento 1:
+      pos_command.data = {1.57, 1.57, 0, 0};  // posizioni target
+      RCLCPP_INFO(this->get_logger(), "Publishing command position %d: {%f, %f, %f, %f}", 
+                  ref,
+                  pos_command.data[0], pos_command.data[1], pos_command.data[2], pos_command.data[3]);
+      publisher_pos->publish(pos_command);
 
-      return count_zero==4;
-    } // end all_errors_zero
 
-    /* Same function as before but based on JointTrajectoryPoint input */
-    bool all_errors_zero_traj(const int n, 
-      const trajectory_msgs::msg::JointTrajectoryPoint &point,
-      const sensor_msgs::msg::JointState & msg)const{
-      /* Computing the position error */
       float* position_error = new float[msg.name.size()];
       int count_zero = 0;
       float threshold = 0.00001;
-
       for(int i=0; i<n; i++){
-        position_error[i] = point.positions[i] - msg.position[i];
-        // printf("\n%f",position_error[i]);
+        position_error[i] = pos_command.data[i] - msg.position[i];
+        printf("\n%f",position_error[i]);
         if(abs(position_error[i])<threshold){
           count_zero++;
         }
       }   
+      if(count_zero==4) ref++; 
 
-      delete[] position_error; // avoiding memory leak
-
-      return count_zero==4;
-    } // end all_errors_zero_traj
-
-    /* Function called by ctrl = 0 */
-    void topic_pos_controller(const int n, const sensor_msgs::msg::JointState & msg)const{
-      // Publisher position controller:
-      auto pos_command = std_msgs::msg::Float64MultiArray();
-      static int ref=0; // switch case
-
-      if(ref==0){
-        /* Target Joint Positions */
-        pos_command.data= {0.0, 0.75, -0.75, 0.0};
-        RCLCPP_INFO(this->get_logger(), "[position controller] Publishing command position %d: {%f, %f, %f, %f}", 
-                    ref,
-                    pos_command.data[0], pos_command.data[1], pos_command.data[2], pos_command.data[3]);
-        // Publish the positions
-        publisher_pos->publish(pos_command);
-
-        if(all_errors_zero(n, pos_command, msg)) ref++; // go to next reference
-
-      } // end if
-      if(ref==1){
-        /* Target Joint Positions */
-        pos_command.data = {0.0, -0.75, 0.75, 0.0};
-        RCLCPP_INFO(this->get_logger(), "[position controller] Publishing command position %d: {%f, %f, %f, %f}", 
-                    ref,
-                    pos_command.data[0], pos_command.data[1], pos_command.data[2], pos_command.data[3]);
-        // Publish the positions
-        publisher_pos->publish(pos_command);
-
-        
-        if(all_errors_zero(n, pos_command, msg)) ref++; // go to next reference
-
-      } // end if
-      if(ref==2){
-        /* Target Joint Positions */
-        pos_command.data = {0.0, -0.75, 0.75, -0.5};
-        RCLCPP_INFO(this->get_logger(), "[position controller] Publishing command position %d: {%f, %f, %f, %f}", 
-                    ref,
-                    pos_command.data[0], pos_command.data[1], pos_command.data[2], pos_command.data[3]);
-        // Publish the positions
-        publisher_pos->publish(pos_command);
-
-        if(all_errors_zero(n, pos_command, msg)) ref++; // go to next reference
-
-      } // end if
-      if(ref==3){
-        /* Target Joint Positions */
-        pos_command.data = {0.0, -0.75, 0.75, 0.5};
-        RCLCPP_INFO(this->get_logger(), "[position controller] Publishing command position %d: {%f, %f, %f, %f}", 
-                    ref,
-                    pos_command.data[0], pos_command.data[1], pos_command.data[2], pos_command.data[3]);
-        // Publish the positions
-        publisher_pos->publish(pos_command);
-
-        if(all_errors_zero(n, pos_command, msg)) ref++; // go to next reference
-
-      } // end if
-
-    } // end topic_pos_controller
-
-    /* Function called by ctrl = 1 */
-    void topic_traj_controller(const int n, const sensor_msgs::msg::JointState & msg)const{
-      // Publisher trajectory controller:
-      auto traj_command = trajectory_msgs::msg::JointTrajectory();
-      traj_command.joint_names = {"j0", "j1", "j2", "j3"};
-      trajectory_msgs::msg::JointTrajectoryPoint point;
-      static int ref=0; // switch case
-      
-      if(ref==0){
-        /* Target Joint Positions */
-        point.positions = {0.0, 1.57, 0.0, 0.0};
-        // point.velocities = {0.0, 0.0, 0.0, 0.0};
-        // point.time_from_start = rclcpp::Duration::from_seconds(5.0);  // settling time
-
-        // Push this point to the points field
-        traj_command.points.push_back(point);
-
-        RCLCPP_INFO(this->get_logger(), "[trajectory controller] Publishing command position %d: {%f, %f, %f, %f}", 
-                    ref,
-                    point.positions[0], point.positions[1], point.positions[2], point.positions[3]);
-        // Publish the positions
-        publisher_traj->publish(traj_command);
-
-        if(all_errors_zero_traj(n, point, msg)) ref++; // go to next reference
-
-      } // end if
-      if(ref==1){
-        /* Target Joint Positions */
-        point.positions = {0.0, 1.57, 0.35, 0.75};
-        // point.velocities = {0.0, 0.0, 0.0, 0.0};
-        // point.time_from_start = rclcpp::Duration::from_seconds(5.0);  // settling time
-
-        // Push this point to the points field
-        traj_command.points.push_back(point);
-
-        RCLCPP_INFO(this->get_logger(), "[trajectory controller] Publishing command position %d: {%f, %f, %f, %f}", 
-                    ref,
-                    point.positions[0], point.positions[1], point.positions[2], point.positions[3]);
-        // Publish the positions
-        publisher_traj->publish(traj_command);
-
-        if(all_errors_zero_traj(n, point, msg)) ref++; // go to next reference
-
-      } // end if
-      if(ref==2){
-        /* Target Joint Positions */
-        point.positions = {0.0, 1.57, -0.75, 0.0};
-        // point.velocities = {0.0, 0.0, 0.0, 0.0};
-        // point.time_from_start = rclcpp::Duration::from_seconds(5.0);  // settling time
-
-        // Push this point to the points field
-        traj_command.points.push_back(point);
-
-        RCLCPP_INFO(this->get_logger(), "[trajectory controller] Publishing command position %d: {%f, %f, %f, %f}", 
-                    ref,
-                    point.positions[0], point.positions[1], point.positions[2], point.positions[3]);
-        // Publish the positions
-        publisher_traj->publish(traj_command);
-
-        if(all_errors_zero_traj(n, point, msg)) ref++; // go to next reference
-
-      } // end if
-      if(ref==3){
-        /* Target Joint Positions */
-        point.positions = {0.0, 1.57, 0.0, 0.0};
-        // point.velocities = {0.0, 0.0, 0.0, 0.0};
-        // point.time_from_start = rclcpp::Duration::from_seconds(5.0);  // settling time
-
-        // Push this point to the points field
-        traj_command.points.push_back(point);
-
-        RCLCPP_INFO(this->get_logger(), "[trajectory controller] Publishing command position %d: {%f, %f, %f, %f}", 
-                    ref,
-                    point.positions[0], point.positions[1], point.positions[2], point.positions[3]);
-        // Publish the positions
-        publisher_traj->publish(traj_command);
-
-        if(all_errors_zero_traj(n, point, msg)) ref++; // go to next reference
-
-      } // end if
-
-    } // end topic_traj_controller
-
-    /* Function that receives msg from Sensor and publish the positions to the selected controller */
-    void topic_callback(const sensor_msgs::msg::JointState & msg) const
-    {
-      int n = msg.name.size(); // joint number
-
-      for(int i=0; i<n; i++)
-        RCLCPP_INFO(this->get_logger(), "[Subscriber] I heard joint '%s':\tpos=%f\tvel=%f\teff=%f", 
-                    msg.name[i].c_str(), msg.position[i], msg.velocity[i], msg.effort[i]);
-
-      if(ctrl==0){
-        topic_pos_controller(n, msg);
-      }
-      else if(ctrl==1){
-        topic_traj_controller(n, msg);
-      }
-
-    } // end topic_callback
+      delete[] position_error; // memory leak uagliu
+    }
+    if(ref==2){
+      // riferimento 1:
+      pos_command.data = {1.57, 1.57, -1.57, 0};  // posizioni target
+      RCLCPP_INFO(this->get_logger(), "Publishing command position %d: {%f, %f, %f, %f}", 
+                  ref,
+                  pos_command.data[0], pos_command.data[1], pos_command.data[2], pos_command.data[3]);
+      publisher_pos->publish(pos_command);
 
 
-    rclcpp::TimerBase::SharedPtr timer_;
-    rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr publisher_pos;
-    rclcpp::Publisher<trajectory_msgs::msg::JointTrajectory>::SharedPtr publisher_traj;
-    rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr subscription_;
-    size_t count_;
-    int ctrl;
-}; // end class
+      float* position_error = new float[msg.name.size()];
+      int count_zero = 0;
+      float threshold = 0.00001;
+      for(int i=0; i<n; i++){
+        position_error[i] = pos_command.data[i] - msg.position[i];
+        printf("\n%f",position_error[i]);
+        if(abs(position_error[i])<threshold){
+          count_zero++;
+        }
+      }   
+      if(count_zero==4) ref++; 
 
+      delete[] position_error; // memory leak uagliu
+    }
+    if(ref==3){
+      // riferimento 1:
+      pos_command.data = {1.57, 1.57, -1.57, 1.57};  // posizioni target
+      RCLCPP_INFO(this->get_logger(), "Publishing command position %d: {%f, %f, %f, %f}", 
+                  ref,
+                  pos_command.data[0], pos_command.data[1], pos_command.data[2], pos_command.data[3]);
+      publisher_pos->publish(pos_command);
+
+
+      float* position_error = new float[msg.name.size()];
+      int count_zero = 0;
+      float threshold = 0.00001;
+      for(int i=0; i<n; i++){
+        position_error[i] = pos_command.data[i] - msg.position[i];
+        printf("\n%f",position_error[i]);
+        if(abs(position_error[i])<threshold){
+          count_zero++;
+        }
+      }   
+      if(count_zero==4) ref++; 
+
+      delete[] position_error; // memory leak uagliu
+    }
+  }
+
+  void topic_traj_controller()const{
+    // Publisher trajectory controller:
+    auto traj_command = trajectory_msgs::msg::JointTrajectory();
+    traj_command.joint_names = {"j0", "j1", "j2", "j3"};
+
+    trajectory_msgs::msg::JointTrajectoryPoint point;
+    point.positions = {0.0, 1.57, 0.0, 0.0};
+    // point.time_from_start = rclcpp::Duration::from_seconds(2.0);  // tempo per raggiungere la pos
+
+    traj_command.points.push_back(point);
+
+    RCLCPP_INFO(this->get_logger(), "Publishing... ");
+    publisher_traj->publish(traj_command);
+  }
+
+  void topic_callback(const sensor_msgs::msg::JointState & msg) const
+  {
+    int n = msg.name.size(); // numero di giunti
+    for(int i=0; i<n; i++)
+      RCLCPP_INFO(this->get_logger(), "I heard joint: '%s'\tpos=%f\tvel=%f\teff=%f", 
+                  msg.name[i].c_str(), msg.position[i], msg.velocity[i], msg.effort[i]);
+    if(ctrl==0){
+      topic_pos_controller(n, msg);
+    }
+    else if(ctrl==1){
+      topic_traj_controller();
+    }
+
+  }
+
+  rclcpp::TimerBase::SharedPtr timer_;
+  rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr publisher_pos;
+  rclcpp::Publisher<trajectory_msgs::msg::JointTrajectory>::SharedPtr publisher_traj;
+  rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr subscription_;
+  size_t count_;
+  int ctrl;
+};
 
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
-  // debug:
-  // std::cout << "[main] argc = " << argc << std::endl;
-  // for (int i = 0; i < argc; i++)
-  //     std::cout << "[main] argv[" << i << "] = " << argv[i] << std::endl;
-  
-  int sel = 0;
-  /* sel is the selection var: 
-    sel = 0 -> position controller;
-    sel = 1 -> trajectory controller.
-
-    Note: the default controller is the position controller
-  */ 
-
-  if(argc<2){
-    std::cout << "[main] No controller selected. Starting the defualt one..." << std::endl; 
-  }
-  else{
-    // To int conversion of the first char
-    sel = argv[1][0] - 48;
-  }
-
-  if(sel>-1 && sel < 2){
-    std::cout << "[main] ctrl = " << sel << std::endl;
-    //start spin
-    rclcpp::spin(std::make_shared<ArmandoController>(sel));
-    rclcpp::shutdown();
-  }
-  else{
-    std::cout << "[main] ctrl = " << sel << " is not defined. Closing..." << std::endl;
-  }
-  
+  // debug
+  std::cout << "[DEBUG] argc = " << argc << std::endl;
+  for (int i = 0; i < argc; i++)
+      std::cout << "[DEBUG] argv[" << i << "] = " << argv[i] << std::endl;
+  // conversione a intero
+  int sel = argv[1][0]-48;
+  std::cout << "[DEBUG] ctrl = " << sel << std::endl;
+  //start spin
+  rclcpp::spin(std::make_shared<ArmandoController>(sel));
+  rclcpp::shutdown();
   
   return 0;
 }

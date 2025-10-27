@@ -1,33 +1,40 @@
-# armando display launcher
-
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, Command
 from launch_ros.actions import Node
-from launch.conditions import IfCondition, UnlessCondition
-
 from ament_index_python.packages import get_package_share_directory
+from launch.conditions import IfCondition, UnlessCondition
 import os
 
-
 def generate_launch_description():
-    # Package path
+    # Percorso del pacchetto
     pkg_path = get_package_share_directory('armando_description')
-    # Urdf path
-    urdf_path = os.path.join(pkg_path, 'urdf', 'arm.urdf')
-    # read the urdf and store the robot description
-    with open(urdf_path, 'r') as infp:
-        robot_desc = infp.read()
 
-    # Rviz config path
-    rviz_config_path = os.path.join(pkg_path, 'config_armando', 'standing.rviz')
+    # Percorsi dei file
+    # urdf_path = os.path.join(pkg_path, 'urdf', 'arm.urdf')
+    rviz_config_path = os.path.join(pkg_path, 'config_armando','rviz_armando.rviz')
 
-    # Params: containing the robot description
-    params = {'robot_description': robot_desc}
+    # Leggi il file URDF
+    #with open(urdf_path, 'r') as infp:
+    #   robot_desc = infp.read()
+
+    
+    xacro_armando = os.path.join(pkg_path, "urdf", "arm.urdf.xacro")
+
+    #params = {"robot_description": Command(['xacro', xacro_armando, 'j0_pos:=2.0', ' j1_pos:=0.2', 'j2_pos:=0.0', 'j3_pos:=0.0'])}
+    
+    params = {
+        "robot_description": Command([
+            "xacro ", xacro_armando,
+            " j0_pos:=2.0 j1_pos:=0.2 j2_pos:=0.0 j3_pos:=0.0"
+        ])
+    }
 
 
-    #### Arguments ####
+    # Parametri del robot
+    # params = {'robot_description': robot_desc}
 
+    # Argomento per scegliere se usare la GUI o no
     jsp_gui = DeclareLaunchArgument(
         name='jsp_gui',
         default_value='true',
@@ -35,9 +42,7 @@ def generate_launch_description():
         description='Flag to enable joint_state_publisher_gui'
     )
 
-
-    #### Nodes ####
-
+    # Nodi ROS2
     robot_state_publisher = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
@@ -64,8 +69,7 @@ def generate_launch_description():
         arguments=['-d', rviz_config_path],
     )
 
-
-    # List of Arguments and Nodes
+    # Lista dei nodi da lanciare
     return LaunchDescription([
         jsp_gui,
         joint_state_publisher,
@@ -73,3 +77,4 @@ def generate_launch_description():
         robot_state_publisher,
         rviz2,
     ])
+

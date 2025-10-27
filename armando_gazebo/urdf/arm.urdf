@@ -10,14 +10,14 @@
   <link name="base_link">
     <visual>
       <geometry>
-        <mesh filename="package://armando_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://armando_gazebo/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <material name="red"/>
     </visual>
     <collision>
       <geometry>
-        <box size = "0.09 0.09 0.08"/>
+        <mesh filename="package://armando_gazebo/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -36,14 +36,14 @@
   <link name="base_turn">
     <visual>
       <geometry>
-        <mesh filename="package://armando_description/meshes/base_turn.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://armando_gazebo/meshes/base_turn.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <material name="red"/>
     </visual>
     <collision>
       <geometry>
-          <box size = "0.06 0.07 0.007"/>
+          <mesh filename="package://armando_gazebo/meshes/base_turn.stl" scale="0.001 0.001 0.001"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>   
@@ -64,13 +64,13 @@
   <link name="base_turn_rot">
     <visual>
       <geometry>
-        <mesh filename="package://armando_description/meshes/base_turn_table_rot.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://armando_gazebo/meshes/base_turn_table_rot.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="red"/>
     </visual>
     <collision>
       <geometry>
-          <box size = "0.05 0.05 0.02"/>
+          <mesh filename="package://armando_gazebo/meshes/base_turn_table_rot.stl" scale="0.001 0.001 0.001"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -90,14 +90,14 @@
   <link name="dyn2">
     <visual>
       <geometry>
-        <mesh filename="package://armando_description/meshes/dyn.stl" scale="0.01 0.01 0.01"/>
+        <mesh filename="package://armando_gazebo/meshes/dyn.stl" scale="0.01 0.01 0.01"/>
       </geometry>
       
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </visual>
     <collision>
       <geometry>
-          <box size = "0.05 0.03 0.04"/>
+          <mesh filename="package://armando_gazebo/meshes/dyn.stl" scale="0.01 0.01 0.01"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -128,14 +128,14 @@
   <link name="f4">
     <visual>
       <geometry>
-        <mesh filename="package://armando_description/meshes/f4_n_f3.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://armando_gazebo/meshes/f4_n_f3.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <material name="red"/>
     </visual>
     <collision>
       <geometry>
-          <box size = "0.048 0.091 0.028"/>
+          <mesh filename="package://armando_gazebo/meshes/f4_n_f3.stl" scale="0.001 0.001 0.001"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -154,13 +154,13 @@
   <link name="dyn3">
     <visual>
       <geometry>
-        <mesh filename="package://armando_description/meshes/dyn.stl" scale="0.01 0.01 0.01"/>
+        <mesh filename="package://armando_gazebo/meshes/dyn.stl" scale="0.01 0.01 0.01"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </visual>
     <collision>
       <geometry>
-          <box size = "0.05 0.03 0.04"/>
+          <mesh filename="package://armando_gazebo/meshes/dyn.stl" scale="0.01 0.01 0.01"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -191,14 +191,14 @@
   <link name="f5">
     <visual>
       <geometry>
-        <mesh filename="package://armando_description/meshes/f4_n_f3.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://armando_gazebo/meshes/f4_n_f3.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <material name="red"/>
     </visual>
     <collision>
       <geometry>
-          <box size = "0.048 0.091 0.028"/>
+          <mesh filename="package://armando_gazebo/meshes/f4_n_f3.stl" scale="0.001 0.001 0.001"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -217,14 +217,14 @@
   <link name="dyn4">
     <visual>
       <geometry>
-        <mesh filename="package://armando_description/meshes/dyn.stl" scale="0.01 0.01 0.01"/>
+        <mesh filename="package://armando_gazebo/meshes/dyn.stl" scale="0.01 0.01 0.01"/>
       </geometry>
       
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </visual>
     <collision>
       <geometry>
-          <box size = "0.05 0.03 0.04"/>
+          <mesh filename="package://armando_gazebo/meshes/dyn.stl" scale="0.01 0.01 0.01"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -256,14 +256,14 @@
   <link name="wrist">
     <visual>
       <geometry>
-        <mesh filename="package://armando_description/meshes/wrist.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://armando_gazebo/meshes/wrist.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <material name="red"/>
     </visual>
     <collision>
       <geometry>
-        <box size = "0.048 0.054 0.042"/>
+        <mesh filename="package://armando_gazebo/meshes/wrist.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -283,13 +283,13 @@
     <link name="dyn5">
     <visual>
       <geometry>
-        <mesh filename="package://armando_description/meshes/dyn.stl" scale="0.01 0.01 0.01"/>
+        <mesh filename="package://armando_gazebo/meshes/dyn.stl" scale="0.01 0.01 0.01"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </visual>
     <collision>
       <geometry>
-          <box size = "0.05 0.03 0.04"/>
+          <mesh filename="package://armando_gazebo/meshes/dyn.stl" scale="0.01 0.01 0.01"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -321,14 +321,14 @@
   <link name="crawer_base">
     <visual>
       <geometry>
-        <mesh filename="package://armando_description/meshes/the_crawer_base.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://armando_gazebo/meshes/the_crawer_base.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <material name="red"/>
     </visual>
     <collision>
       <geometry>
-          <box size = "0.104 0.057 0.005"/>
+          <mesh filename="package://armando_gazebo/meshes/the_crawer_base.stl" scale="0.001 0.001 0.001"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -348,7 +348,7 @@
   <link name="crawer_left">
     <visual>
       <geometry>
-        <mesh filename="package://armando_description/meshes/the_crawer.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://armando_gazebo/meshes/the_crawer.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <material name="white">
@@ -357,7 +357,7 @@
     </visual>
     <collision>
       <geometry>
-          <box size = "0.06 0.03 0.04"/>
+          <mesh filename="package://armando_gazebo/meshes/the_crawer.stl" scale="0.001 0.001 0.001"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -378,7 +378,7 @@
   <link name="crawer_right">
     <visual>
       <geometry>
-        <mesh filename="package://armando_description/meshes/the_crawer.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://armando_gazebo/meshes/the_crawer.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <material name="white">
@@ -387,7 +387,7 @@
     </visual>
     <collision>
       <geometry>
-          <box size = "0.06 0.03 0.04"/>
+          <mesh filename="package://armando_gazebo/meshes/the_crawer.stl" scale="0.001 0.001 0.001"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>

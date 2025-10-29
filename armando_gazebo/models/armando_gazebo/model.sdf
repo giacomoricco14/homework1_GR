@@ -1,7 +1,7 @@
 <sdf version="1.7">
-  <model name="armando_gazebo">
+  <model name="armando_description">
     <include>
-      <uri>file://../urdf/arm.urdf.xacro</uri>
+      <uri>file://../urdf/armando.urdf.xacro</uri>
     </include>
   </model>
 </sdf>

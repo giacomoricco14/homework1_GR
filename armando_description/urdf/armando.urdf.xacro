@@ -1,11 +1,6 @@
 <?xml version="1.0"?>
 
 <robot name="arm" xmlns:xacro="http://www.ros.org/wiki/xacro">
-<!-- include della tua hardware interface -->
-  <!-- <xacro:include filename="armando_hardware_interface.xacro"/>
-  <xacro:armando_hardware_interface/> -->
-
-  <xacro:include filename="$(find armando_description)/urdf/armando_hardware_interface.xacro"/>
 
   <material name="red">
     <color rgba="1 0 0 1"/>
@@ -15,14 +10,14 @@
   <link name="base_link">
     <visual>
       <geometry>
-        <mesh filename="package://armando_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://armando_gazebo/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <material name="red"/>
     </visual>
     <collision>
       <geometry>
-        <box size="0.09 0.09 0.08"/>
+        <box size = "0.09 0.09 0.08"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -41,14 +36,14 @@
   <link name="base_turn">
     <visual>
       <geometry>
-        <mesh filename="package://armando_description/meshes/base_turn.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://armando_gazebo/meshes/base_turn.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <material name="red"/>
     </visual>
     <collision>
       <geometry>
-          <box size="0.06 0.078 0.07"/>
+          <box size = "0.06 0.07 0.007"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>   
@@ -69,13 +64,13 @@
   <link name="base_turn_rot">
     <visual>
       <geometry>
-        <mesh filename="package://armando_description/meshes/base_turn_table_rot.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://armando_gazebo/meshes/base_turn_table_rot.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="red"/>
     </visual>
     <collision>
       <geometry>
-          <box size="0.05 0.05 0.02"/>
+          <box size = "0.05 0.05 0.02"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -95,14 +90,14 @@
   <link name="dyn2">
     <visual>
       <geometry>
-        <mesh filename="package://armando_description/meshes/dyn.stl" scale="0.01 0.01 0.01"/>
+        <mesh filename="package://armando_gazebo/meshes/dyn.stl" scale="0.01 0.01 0.01"/>
       </geometry>
       
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </visual>
     <collision>
       <geometry>
-          <box size="0.05 0.032 0.04"/>
+          <box size = "0.05 0.03 0.04"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -133,14 +128,14 @@
   <link name="f4">
     <visual>
       <geometry>
-        <mesh filename="package://armando_description/meshes/f4_n_f3.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://armando_gazebo/meshes/f4_n_f3.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <material name="red"/>
     </visual>
     <collision>
       <geometry>
-          <box size="0.048 0.091 0.028"/>
+          <box size = "0.048 0.091 0.028"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -159,13 +154,13 @@
   <link name="dyn3">
     <visual>
       <geometry>
-        <mesh filename="package://armando_description/meshes/dyn.stl" scale="0.01 0.01 0.01"/>
+        <mesh filename="package://armando_gazebo/meshes/dyn.stl" scale="0.01 0.01 0.01"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </visual>
     <collision>
       <geometry>
-          <box size="0.05 0.032 0.04"/>
+          <box size = "0.05 0.03 0.04"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -196,14 +191,14 @@
   <link name="f5">
     <visual>
       <geometry>
-        <mesh filename="package://armando_description/meshes/f4_n_f3.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://armando_gazebo/meshes/f4_n_f3.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <material name="red"/>
     </visual>
     <collision>
       <geometry>
-          <box size="0.048 0.091 0.028"/>
+          <box size = "0.048 0.091 0.028"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -222,14 +217,14 @@
   <link name="dyn4">
     <visual>
       <geometry>
-        <mesh filename="package://armando_description/meshes/dyn.stl" scale="0.01 0.01 0.01"/>
+        <mesh filename="package://armando_gazebo/meshes/dyn.stl" scale="0.01 0.01 0.01"/>
       </geometry>
       
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </visual>
     <collision>
       <geometry>
-          <box size="0.05 0.032 0.04"/>
+          <box size = "0.05 0.03 0.04"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -261,14 +256,14 @@
   <link name="wrist">
     <visual>
       <geometry>
-        <mesh filename="package://armando_description/meshes/wrist.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://armando_gazebo/meshes/wrist.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <material name="red"/>
     </visual>
     <collision>
       <geometry>
-        <box size="0.048 0.054 0.042"/>
+        <box size = "0.048 0.054 0.042"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -288,13 +283,13 @@
     <link name="dyn5">
     <visual>
       <geometry>
-        <mesh filename="package://armando_description/meshes/dyn.stl" scale="0.01 0.01 0.01"/>
+        <mesh filename="package://armando_gazebo/meshes/dyn.stl" scale="0.01 0.01 0.01"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </visual>
     <collision>
       <geometry>
-          <box size="0.05 0.032 0.04"/>
+          <box size = "0.05 0.03 0.04"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -326,14 +321,14 @@
   <link name="crawer_base">
     <visual>
       <geometry>
-        <mesh filename="package://armando_description/meshes/the_crawer_base.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://armando_gazebo/meshes/the_crawer_base.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <material name="red"/>
     </visual>
     <collision>
       <geometry>
-          <box size="0.104 0.057 0.005"/>
+          <box size = "0.104 0.057 0.005"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -353,7 +348,7 @@
   <link name="crawer_left">
     <visual>
       <geometry>
-        <mesh filename="package://armando_description/meshes/the_crawer.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://armando_gazebo/meshes/the_crawer.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <material name="white">
@@ -362,7 +357,7 @@
     </visual>
     <collision>
       <geometry>
-          <box size1.00="0.06 0.03 0.04"/>
+          <box size = "0.06 0.03 0.04"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -380,10 +375,10 @@
     <origin xyz="0.03 0.015 0.01" rpy="3.1415 -1.57 0"/>
   </joint>
   
-  <link name="crawe1.00r_right">
+  <link name="crawer_right">
     <visual>
       <geometry>
-        <mesh filename="package://armando_description/meshes/the_crawer.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://armando_gazebo/meshes/the_crawer.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <material name="white">
@@ -392,7 +387,7 @@
     </visual>
     <collision>
       <geometry>
-          <box size="0.06 0.03 0.04"/>
+          <box size = "0.06 0.03 0.04"/>
         </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -403,27 +398,9 @@
     </inertial>
   </link>
 
-  <joint name="camera_joint" type="fixed">
-      <parent link="base_link"/>
-      <child link="camera_link"/>
-      <origin xyz="0 0 0" rpy="0 -1.57 0"/>
-  </joint>
-
-  <link name="camera_link">
-      <visual>
-          <pose>0 0 0 0 1.57 0</pose>
-          <geometry>
-              <box size="0.05 0.05 0.05"/>
-          </geometry>
-          <material name="blue"/>
-      </visual>
-  </link>
-
-
-  
   <gazebo>  
     <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
-    <parameters>$(find armando_description)/config_armando/armando_controllers.yaml</parameters>
+    <parameters>$(find armando_gazebo)/config_armando_gz/armando_controllers.yaml</parameters>
       <controller_manager_prefix_node_name>controller_manager</controller_manager_prefix_node_name>
     </plugin>
   </gazebo>
@@ -431,53 +408,26 @@
 
   <xacro:include filename="$(find armando_description)/urdf/armando_hardware_interface.xacro"/>
 
-  <xacro:arg name="j0_pos" default="0.0"/>
-  <xacro:arg name="j1_pos" default="0.0"/>
-  <xacro:arg name="j2_pos" default="0.0"/>
-  <xacro:arg name="j3_pos" default="0.0"/>
-  
-  <ros2_control name="HardwareInterface_Ignition" type="system">
+  <xacro:arg name="j0" default="0.0"/>
+  <xacro:arg name="j1" default="0.0"/>
+  <xacro:arg name="j2" default="0.0"/>
+  <xacro:arg name="j3" default="0.0"/>
+
+  <ros2_control name="PositionJointInterface" type="system">
 
     <hardware>
       <plugin>ign_ros2_control/IgnitionSystem</plugin> 
     </hardware>
-        
-    <xacro:joint_ros2_control name="j0" initial_pos="$(arg j0_pos)"/>  
-    <xacro:joint_ros2_control name="j1" initial_pos="$(arg j1_pos)"/>    
-    <xacro:joint_ros2_control name="j2" initial_pos="$(arg j2_pos)"/>   
-    <xacro:joint_ros2_control name="j3" initial_pos="$(arg j3_pos)"/>   
-    
+
+    <xacro:joint_ros2_control name="j0" initial_pos="$(arg j0)"/>   
+    <xacro:joint_ros2_control name="j1" initial_pos="$(arg j1)"/>   
+    <xacro:joint_ros2_control name="j2" initial_pos="$(arg j2)"/>   
+    <xacro:joint_ros2_control name="j3" initial_pos="$(arg j3)"/>   
 
   </ros2_control>
-
-    <gazebo>
-    <plugin filename="gz-sim-sensors-system"
-      name="gz::sim::systems::Sensors">
-      <render_engine>ogre2</render_engine>
-    </plugin>
-    </gazebo>
-
-    <gazebo reference="camera_link">
-    <sensor name="camera" type="camera">
-     <!-- <pose>0 1 0 0 1.57 0</pose> -->
-      <camera>
-        <horizontal_fov>1.047</horizontal_fov>
-        <image>
-          <width>320</width>
-          <height>240</height>
-        </image>
-        <clip>
-          <near>0.1</near>
-          <far>100</far>
-        </clip>
-      </camera>
-      <always_on>1</always_on>
-      <update_rate>30</update_rate>
-      <visualize>true</visualize>
-      <topic>camera</topic>
-    </sensor>
-  </gazebo>
-
-
+  
+   <xacro:include filename="$(find armando_gazebo)/urdf/armando_camera.xacro"/>
+   
+   <xacro:armando_camera name="armando_camera" armando_camera_pos="0.0 0.0 -0.005" armando_camera_rpy="0.0 0.0 0.0" armando_camera_scale="0.05 0.05 0.05"/>
   
 </robot>

@@ -29,7 +29,7 @@ Then rebuild the docker image through the provided script:
 ## :rocket: Bring up Armando
 Once the image is updated, download this repository in the image folder:
 ```sh
-git clone https://github.com/giacomoricco14/homework1_GR.git
+git clone https://github.com/I-FANTASTICI-4/Homework1.git
 ```
 ### :hammer: Build the packages
 Enter in ros2 workspace and build the following packages using `colcon build` and selecting the required packages:

@@ -3,7 +3,7 @@ The goal of this project is to design and simulate a four-degrees-of-freedom rob
 Starting from the provided base package **armando_description**, the robot description was modified and extended to include visualization and physical modeling in Rviz and Gazebo, and later the integration of sensors and controllers.
  
 ## :hammer_and_wrench: Dockerfile modification
-This package depends on the following Ros2 Humble packages: ros-humble-ros-ign-bridge, ros-humble-ros-gz, ros-humble-controller-manager, ros-humble-ros2-control, ros-humble-ros2-controllers, and ros-humble-ign-ros2-control, which are already included in the provided Dockerfile. Additional dependencies such as ros-humble-urdf-tutorial, ros-humble-xacro and ros-humble-ros-gz-sim have been manually added.
+This package depends on the following ROS2 Humble packages: ros-humble-ros-ign-bridge, ros-humble-ros-gz, ros-humble-controller-manager, ros-humble-ros2-control, ros-humble-ros2-controllers, and ros-humble-ign-ros2-control, which are already included in the provided Dockerfile. Additional dependencies such as ros-humble-urdf-tutorial, ros-humble-xacro and ros-humble-ros-gz-sim have been manually added.
 Therefore, open the Dockerfile and add the following line:
 ```sh
 RUN echo "export IGN_GAZEBO_RESOURCE_PATH=$IGN_GAZEBO_RESOURCE_PATH:/home/user/ros2_ws/src/armando_gazebo/models" >> ${HOME}/.bashrc
@@ -24,7 +24,7 @@ Then rebuild the docker image through the provided script:
 ```sh
 ./docker_build_image.sh <${image_name}>
 ```
-:warning: ***Warning***: Be sure that this is the only export path for IGN GAZEBO.
+:warning: ***Warning*** Be sure that this is the only export path for IGN GAZEBO.
 
 ## :rocket: Bring up Armando
 Once the image is updated, download this repository in the image folder:
@@ -57,16 +57,22 @@ ros2 launch armando_gazebo armando_world.launch.py ctrl:=0
 ```sh
 ros2 launch armando_gazebo armando_world.launch.py ctrl:=1
 ```
-:mag: ***Note***: by default is set on the position controller.
+:mag: ***Note*** by default is set on the position controller.
+
+#### :camera: Armando Camera
+Open an other terminal and write the following command to see what the camera shows:
+```sh
+ros2 run rqt_image_view rqt_image_view
+```
 
 ### :white_check_mark: Armando Controller
-Once the robot is in the Gazebo world, in an other terminal run the `armando_controller_node` by specifying the controller type and setting the argument as follows:
+Once the robot is in the Gazebo world, in an other terminal run the `arm_controller_node` by specifying the controller type and setting the argument as follows:
 * **position controller**:
 ```sh
-ros2 run armando_controller armando_controller_node 0
+ros2 run armando_controller arm_controller_node 0
 ```
 * **trajectory controller**:
 ```sh
-ros2 run armando_controller armando_controller_node 1
+ros2 run armando_controller arm_controller_node 1
 ```
-:mag: ***Note***: also in this case the default item is the position controller.
+:mag: ***Note*** also in this case the default item is the position controller.
